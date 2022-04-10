@@ -60,6 +60,7 @@ function App() {
   const startTimer = () => {
     clearInterval(warInterval);
     baseTime = new Date();
+    setTimeRemaining(0);
     setIsStarted(true);
     const interval = setInterval(() => {
       const currentTime = new Date();
