@@ -10,12 +10,12 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - ls && yarn run build
+      - yarn run build
   post_build:
     commands:
       #- aws s3 rm --recursive "s3://beg-luck-dev/"
       # copy the contents of /build to S3
-      - aws s3 cp --recursive --acl public-read ./web-app/build s3://$DeployBucket/
+      - aws s3 cp --recursive --acl public-read ./build s3://$DeployBucket/
       # set the cache-control headers for service-worker.js to prevent
       # browser caching
       # set the cache-control headers for index.html to prevent
@@ -23,7 +23,7 @@ phases:
       - >
         aws s3 cp --acl public-read 
         --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
-        ./web-app/build/index.html s3://$DeployBucket/
+        ./build/index.html s3://$DeployBucket/
       # invalidate the CloudFront cache for index.html and service-worker.js
       # to force CloudFront to update its edge locations with the new versions
       - >
