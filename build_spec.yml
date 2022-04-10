@@ -10,7 +10,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd web-app && ls && yarn run build
+      - ls && yarn run build
   post_build:
     commands:
       #- aws s3 rm --recursive "s3://beg-luck-dev/"
