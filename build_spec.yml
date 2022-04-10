@@ -1,5 +1,8 @@
 version: 0.1
 phases:
+  install:
+    runtime-versions:
+      nodejs: 16.x
   pre_build:
     commands:
       - echo Installing source NPM dependencies...
@@ -10,9 +13,9 @@ phases:
       - cd web-app && ls && yarn run build
   post_build:
     commands:
-      #- aws s3 rm --recursive "s3://beg-luck-dev/" 
+      #- aws s3 rm --recursive "s3://beg-luck-dev/"
       # copy the contents of /build to S3
-      - aws s3 cp --recursive --acl public-read ./web-app/build s3://$DeployBucket/ 
+      - aws s3 cp --recursive --acl public-read ./web-app/build s3://$DeployBucket/
       # set the cache-control headers for service-worker.js to prevent
       # browser caching
       # set the cache-control headers for index.html to prevent
@@ -28,5 +31,5 @@ phases:
         --paths /index.html /service-worker.js
 artifacts:
   files:
-    - '**/*'
+    - "**/*"
   base-directory: web-app/build
