@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { add, isAfter } from "date-fns";
 
 const timers = [
@@ -46,18 +46,39 @@ const timers = [
   [25, 8],
   [28, 8],
   [29, 10],
-  [30, 0],
+  [29, 60],
 ];
 let baseTime = new Date();
+
+const convertDigit = (time: number) => {
+  return ("0" + time).slice(-2);
+};
+
+const TimerTable = (props: { timeElapsed: number }) => {
+  console.debug(props.timeElapsed);
+  return (
+    <Grid item sx={{ border: "1px solid black", padding: 5 }}>
+      <Typography>Respawn Times</Typography>
+      {timers.map((timer) => {
+        const isPast = props.timeElapsed >= timer[0] * 60 + timer[1];
+        return (
+          <Typography align="center" sx={isPast ? { color: "red" } : {}}>
+            {convertDigit(timer[1] === 0 ? 30 - timer[0] : 29 - timer[0])}:
+            {timer[1] === 0 ? "00" : convertDigit(60 - timer[1])}
+          </Typography>
+        );
+      })}
+    </Grid>
+  );
+};
 
 function App() {
   const [warInterval, setWarInterval] = useState<
     ReturnType<typeof setInterval>
   >(setTimeout(() => {}));
   const [timeRemaining, setTimeRemaining] = useState(20);
+  const [timeElapsed, setTimeElapsed] = useState(0);
   const [isStarted, setIsStarted] = useState(false);
-
-  console.log("Rebuild");
 
   const startTimer = () => {
     clearInterval(warInterval);
@@ -76,8 +97,9 @@ function App() {
         if (skip) continue;
         else {
           const timeDiff = currentTime.getTime() - pastTime.getTime();
-          console.log(timeDiff);
+          const elapsedDiff = currentTime.getTime() - baseTime.getTime();
           setTimeRemaining(Math.abs(Math.floor(timeDiff / 1000)));
+          setTimeElapsed(Math.abs(Math.floor(elapsedDiff / 1000)));
           break;
         }
       }
@@ -98,6 +120,7 @@ function App() {
       <Button onClick={startTimer}>
         {!isStarted ? "Start War" : "Restart War"}
       </Button>
+      <TimerTable timeElapsed={timeElapsed} />
     </Grid>
   );
 }
