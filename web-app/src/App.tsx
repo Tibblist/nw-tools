@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { add, isAfter } from "date-fns";
 
 const timers = [
@@ -55,7 +55,6 @@ const convertDigit = (time: number) => {
 };
 
 const TimerTable = (props: { timeElapsed: number }) => {
-  console.debug(props.timeElapsed);
   return (
     <Grid item sx={{ border: "1px solid black", padding: 5 }}>
       <Typography>Respawn Times</Typography>
@@ -84,6 +83,7 @@ function App() {
     clearInterval(warInterval);
     baseTime = new Date();
     setTimeRemaining(20);
+    setTimeElapsed(0);
     setIsStarted(true);
     const interval = setInterval(() => {
       const currentTime = new Date();
