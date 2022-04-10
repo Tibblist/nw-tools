@@ -57,6 +57,8 @@ function App() {
   const [timeRemaining, setTimeRemaining] = useState(20);
   const [isStarted, setIsStarted] = useState(false);
 
+  console.log("Rebuild");
+
   const startTimer = () => {
     clearInterval(warInterval);
     baseTime = new Date();
