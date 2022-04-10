@@ -54,13 +54,13 @@ function App() {
   const [warInterval, setWarInterval] = useState<
     ReturnType<typeof setInterval>
   >(setTimeout(() => {}));
-  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState(20);
   const [isStarted, setIsStarted] = useState(false);
 
   const startTimer = () => {
     clearInterval(warInterval);
     baseTime = new Date();
-    setTimeRemaining(0);
+    setTimeRemaining(20);
     setIsStarted(true);
     const interval = setInterval(() => {
       const currentTime = new Date();
@@ -71,7 +71,6 @@ function App() {
           seconds: timer[1],
         });
         const skip = isAfter(new Date(), pastTime);
-        console.log(skip);
         if (skip) continue;
         else {
           const timeDiff = currentTime.getTime() - pastTime.getTime();
@@ -94,7 +93,9 @@ function App() {
       alignItems={"center"}
     >
       {isStarted && <Typography>{timeRemaining} until respawn</Typography>}
-      <Button onClick={startTimer}>Start War</Button>
+      <Button onClick={startTimer}>
+        {!isStarted ? "Start War" : "Restart War"}
+      </Button>
     </Grid>
   );
 }
