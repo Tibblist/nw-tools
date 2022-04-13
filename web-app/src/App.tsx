@@ -1,6 +1,11 @@
 import { Button, Grid, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { add, isAfter } from "date-fns";
+import KillThemNow from "./assets/kill-them-now.mp3";
+import DieNow from "./assets/die-now.mp3";
+
+const killAudio = new Audio(KillThemNow);
+const dieAudio = new Audio(DieNow);
 
 const timers = [
   [0, 20],
@@ -124,11 +129,28 @@ function App() {
     Number.MAX_SAFE_INTEGER
   );
 
+  useEffect(() => {
+    if (
+      timeSinceRespawn === 0 ||
+      timeSinceRespawn === 5 ||
+      timeSinceRespawn === 10
+    ) {
+      killAudio.play();
+    }
+  }, [timeSinceRespawn]);
+
+  useEffect(() => {
+    if (timeRemaining === 5) {
+      dieAudio.play();
+    }
+  }, [timeRemaining]);
+
   const startTimer = () => {
     clearInterval(warInterval);
     baseTime = new Date();
     setTimeRemaining(20);
     setTimeElapsed(0);
+    setTimeSinceRespawn(0);
     setIsStarted(true);
     const interval = setInterval(() => {
       const currentTime = new Date();
@@ -168,8 +190,6 @@ function App() {
     setIsStarted(false);
     setTimeSinceRespawn(Number.MAX_SAFE_INTEGER);
   };
-
-  console.log(timeSinceRespawn);
 
   return (
     <Grid
