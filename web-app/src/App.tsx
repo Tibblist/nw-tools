@@ -88,10 +88,10 @@ const TimerTable = (props: { timeElapsed: number }) => {
           direction="column"
           sx={{ width: "fit-content", paddingRight: 1 }}
         >
-          {timers.slice(0, timers.length / 2).map((timer) => {
+          {timers.slice(0, timers.length / 2).map((timer, idx) => {
             const isPast = props.timeElapsed >= timer[0] * 60 + timer[1];
             return (
-              <Grid item>
+              <Grid item key={idx}>
                 <Typography align="center" sx={isPast ? { color: "red" } : {}}>
                   {convertDigit(timer[1] === 0 ? 30 - timer[0] : 29 - timer[0])}
                   :{timer[1] === 0 ? "00" : convertDigit(60 - timer[1])}
@@ -101,10 +101,10 @@ const TimerTable = (props: { timeElapsed: number }) => {
           })}
         </Grid>
         <Grid container direction="column" sx={{ width: "fit-content" }}>
-          {timers.slice(timers.length / 2, timers.length).map((timer) => {
+          {timers.slice(timers.length / 2, timers.length).map((timer, idx) => {
             const isPast = props.timeElapsed >= timer[0] * 60 + timer[1];
             return (
-              <Grid item>
+              <Grid item key={idx}>
                 <Typography align="center" sx={isPast ? { color: "red" } : {}}>
                   {convertDigit(timer[1] === 0 ? 30 - timer[0] : 29 - timer[0])}
                   :{timer[1] === 0 ? "00" : convertDigit(60 - timer[1])}
@@ -130,11 +130,7 @@ function App() {
   );
 
   useEffect(() => {
-    if (
-      timeSinceRespawn === 0 ||
-      timeSinceRespawn === 5 ||
-      timeSinceRespawn === 10
-    ) {
+    if (timeSinceRespawn === 0 || timeSinceRespawn === 5) {
       killAudio.play();
     }
   }, [timeSinceRespawn]);
