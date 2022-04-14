@@ -214,9 +214,11 @@ function App() {
       >
         {!isStarted ? "Start War" : "Restart War"}
       </Button>
-      <Button variant="contained" onClick={endTimer} sx={{ marginBottom: 2 }}>
-        End War
-      </Button>
+      {isStarted && (
+        <Button variant="contained" onClick={endTimer} sx={{ marginBottom: 2 }}>
+          End War
+        </Button>
+      )}
       <TimerTable timeElapsed={timeElapsed} />
     </Grid>
   );
